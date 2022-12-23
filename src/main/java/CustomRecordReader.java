@@ -19,6 +19,7 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 	protected Text key;
 	protected IntWritable value;
 	protected ArrayList<String> stopWords;
+	protected int corpus;
 
 
 	CustomRecordReader() {
@@ -26,10 +27,11 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 		key = null;
 		value = null;
 		stopWords = new ArrayList<>();
+		corpus = 0;
 	}
 	private void createStopWords(){
 		try {
-			File file = new File("stopwords.txt");
+			File file = new File("/src/main/stopWords/stopwords.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -59,7 +61,8 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 			if (reader.nextKeyValue()) {
 				key = reader.getCurrentValue();
 				transformKey();
-				value = new IntWritable((int) reader.getCurrentKey().get() % 2);
+				value = new IntWritable(corpus);
+				corpus = (corpus + 1) % 2;
 				if (isKeyValid()) {
 					return true;
 				}
