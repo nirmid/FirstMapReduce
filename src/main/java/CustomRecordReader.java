@@ -77,7 +77,7 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 			if (stopWords.contains(strKey)){
 				return false;
 			}
-
+		System.out.println((strKey));
 		}
 		return true;
 	}
@@ -86,6 +86,7 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 		//int lengthWithoutLastBracket = key.getLength() - 1;
 		//String keyWithoutBrackets = key.toString().substring(1,lengthWithoutLastBracket);
 		String newKey = key.toString().replaceAll(" ", ",");
+		newKey = newKey.replaceAll("\\[|\\]", "");
 		key.set(newKey);
 	}
 
