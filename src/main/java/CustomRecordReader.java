@@ -33,17 +33,19 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 	
 	@Override
 	public boolean nextKeyValue() throws IOException, InterruptedException {
-		if (reader.nextKeyValue()) {
-			key = reader.getCurrentValue();
-			value = new IntWritable((int)reader.getCurrentKey().get()%2);
-			return true;
-		} else {
-			key = null;
-			value = null;
-			return false;
+		while (true) {
+			if (reader.nextKeyValue()) {
+				key = reader.getCurrentValue();
+				value = new IntWritable((int) reader.getCurrentKey().get() % 2);
+				
+				return true;
+			} else {
+				key = null;
+				value = null;
+				return false;
+			}
 		}
 	}
-	
 	@Override
 	public Text getCurrentKey() throws IOException, InterruptedException {
 		return key;
