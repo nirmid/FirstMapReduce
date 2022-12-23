@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -31,8 +28,8 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 	}
 	private void createStopWords(){
 		try {
-			File file = new File("/src/main/stopWords/stopwords.txt");
-			BufferedReader reader = new BufferedReader(new FileReader(file));
+			InputStream stream = getClass().getClassLoader().getResourceAsStream("stopwords.txt");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] words = line.split(" ");
