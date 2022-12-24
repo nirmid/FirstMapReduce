@@ -72,10 +72,9 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 	}
 
 	private boolean isKeyValid() {
-		String[] keys = key.toString().split(" ");
+		String []splitKey = key.toString().split("\\t");
+		String[] keys = splitKey[0].split(" ");
 		for (String strKey : keys){
-			if (key.toString().equals("MX records_NOUN ,"))
-				System.out.println(strKey);
 			if (stopWords.contains(strKey)){
 				return false;
 			}
