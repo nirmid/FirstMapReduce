@@ -57,10 +57,10 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 		while (true) {
 			if (reader.nextKeyValue()) {
 				key = reader.getCurrentValue();
-				transformKey();
 				value = new IntWritable(corpus);
 				corpus = (corpus + 1) % 2;
 				if (isKeyValid()) {
+					transformKey();
 					return true;
 				}
 			} else {
@@ -72,12 +72,13 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 	}
 
 	private boolean isKeyValid() {
-		String[] keys = key.toString().split(",");
+		String[] keys = key.toString().split(" ");
 		for (String strKey : keys){
+			if (key.toString().equals("MX records_NOUN ,"))
+				System.out.println(strKey);
 			if (stopWords.contains(strKey)){
 				return false;
 			}
-		System.out.println((strKey));
 		}
 		return true;
 	}
@@ -86,7 +87,10 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 		//int lengthWithoutLastBracket = key.getLength() - 1;
 		//String keyWithoutBrackets = key.toString().substring(1,lengthWithoutLastBracket);
 		String newKey = key.toString().replaceAll(" ", ",");
-		newKey = newKey.replaceAll("\\[|\\]", "");
+		//newKey = newKey.replaceAll("\\[|\\]", "");
+		String[] keys;
+		keys = newKey.split("\\t");
+		newKey = keys[0];
 		key.set(newKey);
 	}
 

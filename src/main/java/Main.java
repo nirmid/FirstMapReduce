@@ -37,7 +37,6 @@ public class Main {
 
         public static class IntSumReducer
                 extends Reducer<Text,Text,Text,Text> {
-
             public void reduce(Text key, Iterable<Text> values,
                                Context context
             ) throws IOException, InterruptedException {
@@ -45,13 +44,13 @@ public class Main {
                 int sum1 = 0;
                 if (key.toString().equals("*")) {
                     for (Text val : values) {
-                        int[] pairVal = parseText(val);
+                        int[] pairVal = splitTextCommasToIntArray(val);
                         sum0 += pairVal[0];
                     }
                     context.write(key,new Text(String.valueOf(sum0)));
                 } else {
                     for (Text val : values) {
-                        int[] pairVal = parseText(val);
+                        int[] pairVal = splitTextCommasToIntArray(val);
                         sum0 += pairVal[0];
                         sum1 += pairVal[1];
                     }
@@ -61,7 +60,7 @@ public class Main {
                 }
             }
 
-            private int[] parseText(Text val) {
+            private int[] splitTextCommasToIntArray(Text val) {
                 String input = val.toString();
                 String[] parts = input.split(",");
                 int[] intParts = new int[parts.length];
@@ -74,7 +73,7 @@ public class Main {
 
         public static void main(String[] args) throws Exception {
             Configuration conf = new Configuration();
-            Job job = Job.getInstance(conf, "word count");
+            Job job = Job.getInstance(conf, "EMR1");
             job.setJarByClass(Main.class);
             job.setMapperClass(TokenizerMapper.class);
             job.setCombinerClass(IntSumReducer.class);
