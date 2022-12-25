@@ -52,7 +52,7 @@ public class Main {
                         sum1 += pairVal[1];
                     }
                     Text result = new Text();
-                    result.set(sum0 + "," + sum1);
+                    result.set(sum0 + "," + sum1 + "," + (sum0+sum1));
                     context.write(key, result);
                 }
             }
