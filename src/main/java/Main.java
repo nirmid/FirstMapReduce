@@ -12,19 +12,16 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 public class Main {
         public static class TokenizerMapper
                 extends Mapper<Text, IntWritable, Text, Text>{
-            private final static Text one = new Text("1");
             private final static Text addToCorpus0 = new Text("1,0");
             private final static Text addToCorpus1 = new Text("0,1");
             private Text word = new Text();
-            private final Text asterisk = new Text();
 
             public void map(Text key, IntWritable value, Context context
             ) throws IOException, InterruptedException {
                 StringTokenizer itr = new StringTokenizer(key.toString());
-                asterisk.set("*");
                 while (itr.hasMoreTokens()) {
-                    word.set(itr.nextToken());
-                    context.write(asterisk, one);
+                    String wordDup = itr.nextToken(); // Need to delete
+                    word.set(wordDup + " "  + wordDup + " " + wordDup); //Need to change to word.set(itr.nextToken() instead;
                     if (value.get() == 1) {
                         context.write(word, addToCorpus1);
                     }
@@ -83,10 +80,10 @@ public class Main {
             job.setOutputKeyClass(Text.class);
             job.setOutputValueClass(Text.class);
             //TODO
-            //FileInputFormat.addInputPath(job, new Path(args[1]));
-            //FileOutputFormat.setOutputPath(job, new Path(args[2]));
-            FileInputFormat.addInputPath(job, new Path(args[0]));
-            FileOutputFormat.setOutputPath(job, new Path(args[1]));
+            FileInputFormat.addInputPath(job, new Path(args[1]));
+            FileOutputFormat.setOutputPath(job, new Path(args[2]));
+            //FileInputFormat.addInputPath(job, new Path(args[0]));
+            //FileOutputFormat.setOutputPath(job, new Path(args[1]));
             job.setInputFormatClass(CustomInputFormat.class);
             System.exit(job.waitForCompletion(true) ? 0 : 1);
         }

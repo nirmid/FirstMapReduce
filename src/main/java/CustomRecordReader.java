@@ -73,9 +73,12 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 
 	private boolean isKeyValid() {
 		String []splitKey = key.toString().split("\\t");
+		if (splitKey.length == 0){
+			return false;
+		}
 		String[] keys = splitKey[0].split(" ");
 		for (String strKey : keys){
-			if (stopWords.contains(strKey)){
+			if (stopWords.contains(strKey) || strKey.contains(",")){
 				return false;
 			}
 		}
