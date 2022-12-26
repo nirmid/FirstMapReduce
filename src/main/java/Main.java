@@ -6,6 +6,7 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Partitioner;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
@@ -20,8 +21,9 @@ public class Main {
             ) throws IOException, InterruptedException {
                 StringTokenizer itr = new StringTokenizer(key.toString());
                 while (itr.hasMoreTokens()) {
-                    String wordDup = itr.nextToken(); // Need to delete
-                    word.set(wordDup + " "  + wordDup + " " + wordDup); //Need to change to word.set(itr.nextToken() instead;
+                    //String wordDup = itr.nextToken(); // Need to delete
+                    //word.set(wordDup + " "  + wordDup + " " + wordDup); //Need to change to word.set(itr.nextToken() instead;
+                    word.set(itr.nextToken());
                     if (value.get() == 1) {
                         context.write(word, addToCorpus1);
                     }
@@ -31,7 +33,6 @@ public class Main {
                 }
             }
         }
-
         public static class IntSumReducer
                 extends Reducer<Text,Text,Text,Text> {
             public void reduce(Text key, Iterable<Text> values,
