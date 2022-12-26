@@ -39,22 +39,14 @@ public class Main {
             ) throws IOException, InterruptedException {
                 int sum0 = 0;
                 int sum1 = 0;
-                if (key.toString().equals("*")) {
-                    for (Text val : values) {
-                        int[] pairVal = splitTextCommasToIntArray(val);
-                        sum0 += pairVal[0];
-                    }
-                    context.write(key,new Text(String.valueOf(sum0)));
-                } else {
-                    for (Text val : values) {
-                        int[] pairVal = splitTextCommasToIntArray(val);
-                        sum0 += pairVal[0];
-                        sum1 += pairVal[1];
-                    }
-                    Text result = new Text();
-                    result.set(sum0 + "," + sum1 + "," + (sum0+sum1));
-                    context.write(key, result);
+                for (Text val : values) {
+                    int[] pairVal = splitTextCommasToIntArray(val);
+                    sum0 += pairVal[0];
+                    sum1 += pairVal[1];
                 }
+                Text result = new Text();
+                result.set(sum0 + "," + sum1 + "," + (sum0+sum1));
+                context.write(key, result);
             }
 
             private int[] splitTextCommasToIntArray(Text val) {
@@ -80,10 +72,10 @@ public class Main {
             job.setOutputKeyClass(Text.class);
             job.setOutputValueClass(Text.class);
             //TODO
-            FileInputFormat.addInputPath(job, new Path(args[1]));
-            FileOutputFormat.setOutputPath(job, new Path(args[2]));
-            //FileInputFormat.addInputPath(job, new Path(args[0]));
-            //FileOutputFormat.setOutputPath(job, new Path(args[1]));
+            //FileInputFormat.addInputPath(job, new Path(args[1]));
+            //FileOutputFormat.setOutputPath(job, new Path(args[2]));
+            FileInputFormat.addInputPath(job, new Path(args[0]));
+            FileOutputFormat.setOutputPath(job, new Path(args[1]));
             job.setInputFormatClass(CustomInputFormat.class);
             System.exit(job.waitForCompletion(true) ? 0 : 1);
         }
