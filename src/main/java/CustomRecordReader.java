@@ -78,9 +78,17 @@ public class CustomRecordReader extends RecordReader<Text,IntWritable> {
 		}
 		String[] keys = splitKey[0].split(" ");
 		for (String strKey : keys){
-			if (stopWords.contains(strKey) || strKey.contains(",") || keys.length < 3 ){
+			if (stopWords.contains(strKey) || keys.length != 3 || !isValidWord(strKey) ){
 				return false;
 			}
+		}
+		return true;
+	}
+
+	private boolean isValidWord(String strKey) {
+		for(int i=0; i<strKey.length(); i=i+1 ){
+			if(strKey.charAt(i) < 1488 || strKey.charAt(i) > 1514)
+				return false;
 		}
 		return true;
 	}

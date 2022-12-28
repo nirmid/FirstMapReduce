@@ -9,8 +9,9 @@ import org.apache.hadoop.mapreduce.JobContext;
 import org.apache.hadoop.mapreduce.RecordReader;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
- 
-public class CustomInputFormat extends FileInputFormat<Text, IntWritable> {
+import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
+
+public class CustomInputFormat extends SequenceFileInputFormat<Text, IntWritable> {
  
  
 	  @Override
@@ -20,9 +21,12 @@ public class CustomInputFormat extends FileInputFormat<Text, IntWritable> {
 	  
 	  @Override
 	  protected boolean isSplitable(JobContext context, Path file) {
+		  return super.isSplitable(context,file);
+		  /*
 	    CompressionCodec codec =
 	      new CompressionCodecFactory(context.getConfiguration()).getCodec(file);
 	    return codec == null;
+		   */
 	  }
  
 }
