@@ -11,7 +11,7 @@ import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 
-public class CustomInputFormat extends SequenceFileInputFormat<Text, IntWritable> {
+public class CustomInputFormat extends FileInputFormat<Text, IntWritable> {
  
  
 	  @Override
@@ -21,12 +21,10 @@ public class CustomInputFormat extends SequenceFileInputFormat<Text, IntWritable
 	  
 	  @Override
 	  protected boolean isSplitable(JobContext context, Path file) {
-		  return super.isSplitable(context,file);
-		  /*
 	    CompressionCodec codec =
 	      new CompressionCodecFactory(context.getConfiguration()).getCodec(file);
 	    return codec == null;
-		   */
+
 	  }
  
 }
